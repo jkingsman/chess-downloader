@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download My Chess Games || Download archives from chess.com and Lichess</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/pure-min.css" crossorigin="anonymous">
+    <style>
+        #status {
+            width: calc(100% - 10px);
+            height: 200px;
+        }
+
+        body {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Download your games from Chess.com and Lichess</h1>
+    <p>This site makes use of Chess.com and Lichess' generous public API, but is not affiliated or endorsed by either.</p>
+    <input id="username" placeholder="Username" /><button id="load">Load</button>
+    <button disabled id="chesscom">Load a User First!</button>
+    <button disabled id="lichess">Load a User First!</button>
+
+    <hr />
+    <h2>Status</h2>
+    <textarea id="status"></textarea>
+
+    <script type="text/javascript">
+        let username;
+
+        function log(text) {
+            let textarea = document.getElementById('status');
+            textarea.value = textarea.value + `${text}\n`;
+            textarea.scrollTop = textarea.scrollHeight;
+        }
+
+        function download(filename, text) {
+            let element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        async function doesLichessUserExist(username) {
+            const result = await fetch(`https://lichess.org/api/games/user/${username}`, {
+                method: 'HEAD'
+            });
+            return result.ok;
+        }
+
+        async function doesChesscomUserExist(username) {
+            const result = await fetch(`https://api.chess.com/pub/player/${username}`, {
+                method: 'HEAD'
+            });
+            return result.ok;
+        }
+
+        async function validateUsername() {
+            username = document.getElementById('username').value;
+            let lichess_button = document.getElementById('lichess');
+            let chesscom_button = document.getElementById('chesscom');
+
+            if (username.length == 0) {
+                log("No username provided.");
+                return;
+            }
+
+            if (await doesLichessUserExist(username)) {
+                log(`Lichess user '${username}' found`);
+                lichess_button.disabled = false;
+                lichess_button.innerText = `Download Lichess Games`;
+            } else {
+                log(`Lichess user '${username}' not found`);
+                lichess_button.disabled = true;
+                lichess_button.innerHTML = 'No Lichess Games Found';
+            }
+
+            if (await doesChesscomUserExist(username)) {
+                log(`Chess.com user '${username}' found`);
+                chesscom_button.disabled = false;
+                chesscom_button.innerText = `Download Chess.com Games`;
+            } else {
+                log(`Chess.com user '${username}' not found`);
+                chesscom_button.disabled = true;
+                chesscom_button.innerHTML = 'No Chess.com Games Found';
+            }
+        }
+
+        async function downloadLichess() {
+            log("Requesting Lichess PGN (page 1 of 1)");
+            let lichess_blob = await(await fetch(`https://lichess.org/api/games/user/${username}`)).text();
+
+            log("Preparing download of Lichess games");
+            download(`${username}_lichess_${new Date().toISOString().slice(0, 10)}.pgn`, lichess_blob);
+        }
+
+        async function downloadChessCom() {
+            log("Requesting Chess.com game index");
+            let game_index_json = await(await fetch(`https://api.chess.com/pub/player/${username}/games/archives`)).json();
+            log(`Got ${game_index_json.archives.length} pages of games`);
+
+            let games = [];
+            current_page = 1;
+            for (const game_page of game_index_json.archives) {
+                log(`Requesting Chess.com PGN (page ${current_page + 1} of ${game_index_json.archives.length})`);
+                let game_page_json = await(await fetch(game_page)).json();
+
+                games = games.concat(game_page_json.games.map((game) => game.pgn));
+                current_page++;
+            }
+
+            log(`Preparing download of ${games.length} games from Chess.com`);
+            download(`${username}_chess.com_${new Date().toISOString().slice(0, 10)}.pgn`, games.join("\n"));
+        }
+
+        document.getElementById('username').addEventListener("keypress", (event) => {
+            if (event.key === 'Enter') {
+                validateUsername();
+            }
+        });
+        document.getElementById('load').addEventListener('click', validateUsername);
+        document.getElementById('chesscom').addEventListener('click', downloadChessCom);
+        document.getElementById('lichess').addEventListener('click', downloadLichess);
+    </script>
+</body>
+
+</html>
