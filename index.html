@@ -133,11 +133,11 @@
 
         async function downloadLichess() {
             log("Requesting Lichess PGN (page 1 of 1)");
-            let lichess_blob = await (await fetch(`https://lichess.org/api/games/user/${username}`)).text();
+            let lichess_games = await (await fetch(`https://lichess.org/api/games/user/${username}`)).text();
 
             log("Preparing download of Lichess games");
             const filename = `${username}lichess_${new Date().toISOString().slice(0, 10)}.pgn`;
-            download(filename, games.join("\n"));
+            download(filename, lichess_games);
             log(`Download of ${filename} complete!`)
         }
 
