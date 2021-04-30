@@ -22,49 +22,31 @@
     <title>Download My Chess Games || Download archives from chess.com and Lichess</title>
 
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/pure-min.css" crossorigin="anonymous">
-    <style>
-        .form-input {
-            font-size: 25px;
-            margin-bottom: 10px;
-        }
-
-        @media only screen and (max-width: 700px) {
-            .form-input {
-                width: 100%
-            }
-
-            #username {
-                width: calc(100% - 8px);
-            }
-        }
-
-        #status {
-            width: calc(100% - 8px);
-            height: 200px;
-        }
-
-        body {
-            padding: 10px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
     <h1>Download your games from Chess.com and Lichess</h1>
     <p>This site makes use of Chess.com and Lichess' generous public API, but is not affiliated or endorsed by either.</p>
-    <input id="username" placeholder="Username" class="form-input"/>
-    <button id="load" class="form-input">Load User</button><br />
-    <button id="chesscom" class="form-input hidden">Load a User First!</button>
-    <button id="lichess" class="form-input hidden">Load a User First!</button>
-
+    
+    <div class="pure-form">
+        <div class="pure-g">
+            <div class="pure-u-1">
+                <input type="text" id="username" placeholder="Username" class="form-input"/>
+                <button id="load" class="form-input pure-button button-large">Load User</button>
+            </div>
+        </div>
+        <div>
+            <button id="chesscom" class="button-large pure-button download-button hidden">Load a User First!</button>
+            <button id="lichess" class="button-large pure-button download-button hidden">Load a User First!</button>
+        </div>
+            
+    </div>
+    </form>
     <hr />
     <h2>Status</h2>
-    <textarea disabled id="status">Waiting for username...
-</textarea>
+    <textarea readonly="" id="status"class="pure-u-1">Waiting for username... &#013;&#010;</textarea>
+
 
     <p>Wanna make this better? This page is <a href="https://github.com/jkingsman/chess-downloader">open source</a>.</p>
     <p>Did you find this helpful? <a href="https://ko-fi.com/jackkingsman">Buy me a coffee!</a></p>

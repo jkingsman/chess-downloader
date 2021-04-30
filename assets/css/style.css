@@ -1,0 +1,43 @@
+body {
+    margin: 0% 25%;
+}
+
+@media (max-width:978px)  { 
+    body {
+        margin: 0%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .form-input {
+        width: 100%
+    }
+
+    #username {
+        width: 100%;
+    }
+}
+
+.form-input {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+    .download-button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+#status {
+    height: 200px;
+}
+
+body {
+    padding: 10px;
+}
+
+.hidden {
+    display: none;
+}
