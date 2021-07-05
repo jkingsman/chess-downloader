@@ -1,4 +1,4 @@
-# Chess.com and Lichess Downloader
+# [Chess.com and Lichess Downloader](https://jkingsman.github.io/chess-downloader/)
 
 I got sick of running shell scripts to do this for me, so here it is.
 
