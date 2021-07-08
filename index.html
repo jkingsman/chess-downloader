@@ -14,145 +14,66 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-    <link rel="manifest" href="assets/site.webmanifest">
+    <link rel="manifest" href="assets/other/site.webmanifest">
     <link rel="mask-icon" href="assets/safari-pinned-tab.svg" color="#057a9b">
     <meta name="msapplication-TileColor" content="#00aba9">
     <meta name="theme-color" content="#057a9b">
 
-    <title>Download My Chess Games || Download archives from chess.com and Lichess</title>
+    <link
+    rel="shortcut icon"
+    href="./assets/images/favicon-16x16.png"
+    type="image/x-icon"
+  />
 
+    <title>Download My Chess Games || Download archives from chess.com and Lichess</title>
+ 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/pure-min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="./style.css">
+    <script async src="index.js" ></script>
 </head>
 
 <body>
-    <h1>Download your games from Chess.com and Lichess</h1>
-    <p>This site makes use of Chess.com and Lichess' generous public API, but is not affiliated or endorsed by either.</p>
+    <header>
 
-    <div class="pure-form">
-        <div class="pure-g">
-            <div class="pure-u-1">
-                <input type="text" id="username" placeholder="Username" class="form-input"/>
-                <button id="load" class="form-input pure-button button-large button-secondary">Load User</button>
+        <h1>Chess Downloader</h1>
+    </header>
+
+    <main>
+    
+        <div class="pure-form">
+            <div class="pure-g">
+                <div class="pure-u-1">
+                    <input type="text" id="username" placeholder="Enter your username" class="form-input" required/>
+                    <button id="load" class="form-input pure-button button-large button-secondary">Load User</button>
+                    <div class="spinner-border text-light hidden" role="status" id="loader">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                </div>
             </div>
+            <div>
+                <button id="noInput" class="button-large pure-button download-button button-success hidden">Please Enter your username</button>
+                <button id="userNotFound" class="button-large pure-button download-button button-success hidden">User not found</button>
+                <button id="chesscom" class="button-large pure-button download-button  hidden">Chess.com Games</button>
+                <button id="lichess" class="button-large pure-button download-button  hidden">Li Chess Games</button>
+              
+            </div>
+    
         </div>
-        <div>
-            <button id="chesscom" class="button-large pure-button download-button button-success hidden">Load a User First!</button>
-            <button id="lichess" class="button-large pure-button download-button button-success hidden">Load a User First!</button>
-        </div>
+        </form>   
+    
+        <img src="./assets/images/images (1).jpg">
 
-    </div>
-    </form>
-    <hr />
-    <h2>Status</h2>
-    <textarea readonly="" id="status"class="pure-u-1">Waiting for username... &#013;&#010;</textarea>
+    </main>
 
-
-    <p>Wanna make this better? This page is <a href="https://github.com/jkingsman/chess-downloader">open source</a>.</p>
+  <footer>
+    <p> <a href="https://github.com/jkingsman/chess-downloader"> This page is open source</a>.</p>
     <p>Did you find this helpful? <a href="https://ko-fi.com/jackkingsman">Buy me a coffee!</a></p>
 
-    <script type="text/javascript">
-        let username;
-
-        function log(text) {
-            let textarea = document.getElementById('status');
-            textarea.value = textarea.value + `${text}\n`;
-            textarea.scrollTop = textarea.scrollHeight;
-        }
-
-        function download(filename, text) {
-            let element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', filename);
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        }
-
-        async function doesLichessUserExist(username) {
-            const result = await fetch(`https://lichess.org/api/games/user/${username}`, {
-                method: 'HEAD'
-            });
-            return result.ok;
-        }
-
-        async function doesChesscomUserExist(username) {
-            const result = await fetch(`https://api.chess.com/pub/player/${username}`, {
-                method: 'HEAD'
-            });
-            return result.ok;
-        }
-
-        async function validateUsername() {
-            username = document.getElementById('username').value;
-            let lichess_button = document.getElementById('lichess');
-            let chesscom_button = document.getElementById('chesscom');
-
-            if (username.length == 0) {
-                log("No username provided.");
-                return;
-            }
-
-            if (await doesLichessUserExist(username)) {
-                log(`Lichess user '${username}' found`);
-                lichess_button.classList.remove('hidden');
-                lichess_button.innerText = `Download Lichess Games`;
-            } else {
-                log(`Lichess user '${username}' not found`);
-                lichess_button.classList.add('hidden');
-            }
-
-            if (await doesChesscomUserExist(username)) {
-                log(`Chess.com user '${username}' found`);
-                chesscom_button.classList.remove('hidden');
-                chesscom_button.innerText = `Download Chess.com Games`;
-            } else {
-                log(`Chess.com user '${username}' not found`);
-                chesscom_button.classList.add('hidden');
-            }
-        }
-
-        async function downloadLichess() {
-            log("Requesting Lichess PGN (page 1 of 1)");
-            let lichess_games = await (await fetch(`https://lichess.org/api/games/user/${username}`)).text();
-
-            log("Preparing download of Lichess games");
-            const filename = `${username}_lichess_${new Date().toISOString().slice(0, 10)}.pgn`;
-            download(filename, lichess_games);
-            log(`Download of ${filename} complete!`)
-        }
-
-        async function downloadChessCom() {
-            log("Requesting Chess.com game index");
-            let game_index_json = await (await fetch(`https://api.chess.com/pub/player/${username}/games/archives`)).json();
-            log(`Got ${game_index_json.archives.length} pages of games`);
-
-            let games = [];
-            current_page = 1;
-            for (const game_page of game_index_json.archives) {
-                log(`Requesting Chess.com PGN (page ${current_page} of ${game_index_json.archives.length})`);
-                let game_page_json = await (await fetch(game_page)).json();
-
-                games = games.concat(game_page_json.games.map((game) => game.pgn));
-                current_page++;
-            }
-
-            log(`Preparing download of ${games.length} games from Chess.com`);
-            const filename = `${username}_chess.com_${new Date().toISOString().slice(0, 10)}.pgn`;
-            download(filename, games.join("\n"));
-            log(`Download of ${filename} complete!`)
-        }
-
-        document.getElementById('username').addEventListener("keypress", (event) => {
-            if (event.key === 'Enter') {
-                validateUsername();
-            }
-        });
-        document.getElementById('load').addEventListener('click', validateUsername);
-        document.getElementById('chesscom').addEventListener('click', downloadChessCom);
-        document.getElementById('lichess').addEventListener('click', downloadLichess);
-    </script>
+  </footer>
+   
 </body>
 
 </html>

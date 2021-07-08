@@ -1,0 +1,20 @@
+{
+  "name": "chess-downloader",
+  "version": "1.0.0",
+  "description": "I got sick of running shell scripts to do this for me, so here it is.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Elie-Soued/chess-downloader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Elie-Soued/chess-downloader/issues"
+  },
+  "homepage": "https://github.com/Elie-Soued/chess-downloader#readme"
+}

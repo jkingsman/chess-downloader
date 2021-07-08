@@ -1,0 +1,176 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Newsreader", serif;
+}
+
+html {
+  height: 100vh;
+  font-size: 62.5%;
+}
+
+body {
+  height: 100%;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: black;
+  color: white;
+}
+
+header {
+  text-align: center;
+}
+
+header h1 {
+  margin: 3rem;
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+input {
+  text-align: center;
+}
+
+main p {
+  font-size: 3.5em;
+  text-align: center;
+}
+
+main img {
+  margin-top: 2rem;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 1.5em;
+}
+
+footer p {
+  margin: 0px;
+  text-align: center;
+  font-size: 2em;
+}
+
+img {
+  width: 70%;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+.center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/******************************************************/
+
+button {
+  box-sizing: border-box;
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+  font-size: 3rem;
+}
+
+button,
+input {
+  font-family: "Newsreader", serif;
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+#load {
+  background-color: lightgray;
+  color: black;
+  font-family: "Newsreader", serif;
+}
+
+#noInput,
+#userNotFound,
+#chesscom,
+#lichess {
+  font-size: 2rem;
+  background-color: black;
+  color: white;
+}
+
+#username {
+  border: 1px solid black;
+}
+
+/****************************************************************/
+
+@media (max-width: 978px) {
+  body {
+    margin: 0%;
+  }
+}
+
+@media (max-width: 700px) {
+  .form-input {
+    width: 100%;
+  }
+
+  #username {
+    width: 100%;
+  }
+}
+
+.form-input {
+  font-size: 25px;
+}
+
+@media (max-width: 700px) {
+  .download-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 375px) {
+  main p {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  body {
+    height: 100vh;
+  }
+}
+
+@media (max-width: 280px) {
+  header h1 {
+    font-size: 3rem;
+  }
+
+  footer p {
+    font-size: 2.2rem;
+  }
+}
